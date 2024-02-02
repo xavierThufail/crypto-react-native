@@ -8,6 +8,7 @@ import { StatusBar, SafeAreaView } from 'react-native';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { View } from '@/components/Themed';
+import { CurrencyDetail, useCurrency } from '@/hooks';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -48,14 +49,21 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-
+  const currencyHook = useCurrency();
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="search" options={{  headerShown: false }} />
-        <Stack.Screen name="(tabs)/index" options={{ headerShown: false }} />
-      </Stack>
+      <CurrencyDetail.Provider value={currencyHook}>
+        <View style={{ height: StatusBar.currentHeight }}>
+          <SafeAreaView>
+            <StatusBar translucent />
+          </SafeAreaView>
+        </View>
+        <Stack>
+          <Stack.Screen name="search" options={{  headerShown: false }} />
+          <Stack.Screen name="(tabs)/index" options={{ headerShown: false }} />
+        </Stack>
+      </CurrencyDetail.Provider>
     </ThemeProvider>
   );
 }
