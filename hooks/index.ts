@@ -64,8 +64,6 @@ const useChartHistory = ({ selectedCurrency }: GetSupportedCurrencyResult) => {
   React.useEffect(() => {
     if (!selectedCurrency) return;
 
-    if (!refetch && historyChart.length > 0) return;
-
     setLoadingHistoryChart(true);
 
     fetchAPI<number>('https://pintu-proxy.vercel.app/time')
@@ -90,7 +88,10 @@ const useChartHistory = ({ selectedCurrency }: GetSupportedCurrencyResult) => {
         })));
       })
       .catch((error) => console.warn(error))
-      .finally(() => setLoadingHistoryChart(false));
+      .finally(() => {
+        setLoadingHistoryChart(false);
+        refetch && setRefetch(false);
+      });
   }, [selectedCurrency, refetch]);
 
   const triggerRefetch = () => {
