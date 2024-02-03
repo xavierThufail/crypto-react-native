@@ -1,44 +1,28 @@
+import { CurrencyDetail } from '@/hooks';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 
 const ButtonTransaction = () => {
+  const hook = React.useContext(CurrencyDetail);
+
+  const formatStringToCurrency = (value?: string) => {
+    if (!value) return 'Rp 0';
+
+    return Number(value).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+  }
+
   return (
-      <View style={{
-        backgroundColor: '#FFF',
-        paddingHorizontal: 20,
-        paddingTop: 10,
-        paddingBottom: 30,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        width: '100%',
-        gap: 20,
-      }}>
-        <View style={{
-          width: '50%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 5,
-        }}>
-          <Text style={[styles.fontStandard, styles.bold]} >$1</Text>
-          <TouchableOpacity style={[styles.flexCentered, { padding: 10, width: '100%', borderRadius: 6, backgroundColor: '#0a68f4' }]}>
+      <View style={styles.containerButtonTransaction}>
+        <View style={styles.containerOrder}>
+          <Text style={[styles.fontStandard, styles.bold]} >{formatStringToCurrency(hook.tickerCurrency?.buy)}</Text>
+          <TouchableOpacity style={[styles.flexCentered, styles.button, { backgroundColor: '#0a68f4' }]}>
             <Text style={[styles.bold, styles.whiteColor, styles.fontStandard]}>Buy</Text>
           </TouchableOpacity>
         </View>
-        <View style={{
-          width: '50%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 5,
-        }}>
-          <Text style={[styles.fontStandard, styles.bold]} >$1</Text>
-          <TouchableOpacity style={[styles.flexCentered, { padding: 10, width: '100%', borderRadius: 6, backgroundColor: '#e54040' }]}>
+        <View style={styles.containerOrder}>
+          <Text style={[styles.fontStandard, styles.bold]} >{formatStringToCurrency(hook.tickerCurrency?.sell)}</Text>
+          <TouchableOpacity style={[styles.flexCentered, styles.button, { backgroundColor: '#e54040' }]}>
             <Text style={[styles.bold, styles.whiteColor, styles.fontStandard]}>Sell</Text>
           </TouchableOpacity>
         </View>
@@ -179,6 +163,32 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
     height: 16,
+  },
+  containerButtonTransaction: {
+    backgroundColor: '#FFF',
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    paddingBottom: 30,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    gap: 20,
+  },
+  containerOrder: {
+    width: '50%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 5,
+  },
+  button: {
+    padding: 10,
+    width: '100%',
+    borderRadius: 6,
   },
 });
 
