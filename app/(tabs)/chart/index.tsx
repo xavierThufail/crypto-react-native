@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     margin: 0,
     position: 'relative',
     paddingBottom: 500,
-    backgroundColor: 'pink'
   },
   title: {
     fontSize: 20,
