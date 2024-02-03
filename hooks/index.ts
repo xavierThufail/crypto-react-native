@@ -17,6 +17,9 @@ const defaultValue = {
   setTickerCurrency: () => {},
   getCurrencyAmount: () => '',
   triggerRefetch: () => {},
+  loadingCurrencies: false,
+  loadingHistoryChart: false,
+  loadingPrice: false,
 };
 
 export const CurrencyDetail = React.createContext<ReturnType<typeof useCurrency>>(defaultValue);
@@ -25,8 +28,10 @@ export type CurrencyTypeResult = ReturnType<typeof useCurrency>;
 const useGetSuportedCurrency = () => {
   const [currencies, setCurrencies] = React.useState<CurrencyType[]>([]);
   const [selectedCurrency, setSelectedCurrency] = React.useState<CurrencyType | null>(null);
+  const [loadingCurrencies, setLoadingCurrencies] = React.useState(false);
 
   React.useEffect(() => {
+    setLoadingCurrencies(true);
     fetchAPI<FetchSupportedCurrenciesResponse>(urlSupportedCurrencies)
       .then((response) => {
         const newCurrencies = response.slice(0, 50).map((item) =>
@@ -37,13 +42,15 @@ const useGetSuportedCurrency = () => {
         setCurrencies(newCurrencies);
         setSelectedCurrency(newCurrencies[0]);
       })
-      .catch((error) => console.warn(error));
+      .catch((error) => console.warn(error))
+      .finally(() => setLoadingCurrencies(false));
   }, []);
 
   return {
     currencies,
     selectedCurrency,
     setSelectedCurrency,
+    loadingCurrencies,
   };
 };
 
@@ -51,12 +58,15 @@ type GetSupportedCurrencyResult = ReturnType<typeof useGetSuportedCurrency>;
 
 const useChartHistory = ({ selectedCurrency }: GetSupportedCurrencyResult) => {
   const [historyChart, setHistoryChart] = React.useState<CandleStickChart[]>([]);
+  const [loadingHistoryChart, setLoadingHistoryChart] = React.useState(false);
   const [refetch, setRefetch] = React.useState(false);
 
   React.useEffect(() => {
     if (!selectedCurrency) return;
 
     if (!refetch && historyChart.length > 0) return;
+
+    setLoadingHistoryChart(true);
 
     fetchAPI<number>('https://pintu-proxy.vercel.app/time')
       .then((response) => {
@@ -79,7 +89,8 @@ const useChartHistory = ({ selectedCurrency }: GetSupportedCurrencyResult) => {
           low: item.Low,
         })));
       })
-      .catch((error) => console.warn(error));
+      .catch((error) => console.warn(error))
+      .finally(() => setLoadingHistoryChart(false));
   }, [selectedCurrency, refetch]);
 
   const triggerRefetch = () => {
@@ -89,6 +100,7 @@ const useChartHistory = ({ selectedCurrency }: GetSupportedCurrencyResult) => {
   return {
     historyChart,
     triggerRefetch,
+    loadingHistoryChart,
   };
 };
 
@@ -96,6 +108,7 @@ type GetHistoryChartResult = ReturnType<typeof useChartHistory>;
 
 const useGetPriceCurrency = ({ selectedCurrency, historyChart, triggerRefetch }: GetSupportedCurrencyResult & GetHistoryChartResult) => {
   const [tickerCurrency, setTickerCurrency] = React.useState<TickerType | null>(null);
+  const [loadingPrice, setLoadingPrice] = React.useState(false);
   const [channel, setChannel] = React.useState('');
 
   const ws = React.useRef<WebSocket | null>(null);
@@ -152,6 +165,8 @@ const useGetPriceCurrency = ({ selectedCurrency, historyChart, triggerRefetch }:
 
     setChannel(newChannel);
 
+    setLoadingPrice(true);
+
     fetchAPI<FetchTickerCurrencyResponse>(urlTickerCurrency + `/${selectedCurrency.symbol.toLowerCase()}`)
       .then((response) => {
         const { ticker } = response;
@@ -161,7 +176,8 @@ const useGetPriceCurrency = ({ selectedCurrency, historyChart, triggerRefetch }:
 
         setTickerCurrency(ticker);
       })
-      .catch((error) => console.warn(error));
+      .catch((error) => console.warn(error))
+      .finally(() => setLoadingPrice(false));
 
     return () => {
       wsCurrent.close();
@@ -187,6 +203,7 @@ const useGetPriceCurrency = ({ selectedCurrency, historyChart, triggerRefetch }:
   return {
     tickerCurrency,
     getCurrencyAmount,
+    loadingPrice,
   };
 };
 

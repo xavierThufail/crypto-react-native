@@ -103,9 +103,22 @@ const HeaderChartText = () => {
   );
 };
 
+const Loading = () => (
+  <View style={[styles.containerHeader, { flexDirection: 'column' }]}>
+    <Text style={[styles.fontSmall, styles.colorSecondary]}></Text>
+    <View style={styles.containerPrice}>
+      <Text style={[styles.fontHeadline, styles.bold]}>Please wait</Text>
+    </View>
+  </View>
+);
+
 const Header = () => {
   const modalHook = useModal();
-  const { showChartText, tickerCurrency, getCurrencyAmount, selectedCurrency } = React.useContext(CurrencyDetail);
+  const { showChartText, tickerCurrency, getCurrencyAmount, selectedCurrency, loadingPrice } = React.useContext(CurrencyDetail);
+
+  if (loadingPrice) {
+    return <Loading />;
+  };
 
   if (!selectedCurrency || !tickerCurrency) {
     return null;
