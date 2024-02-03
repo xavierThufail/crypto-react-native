@@ -4,22 +4,31 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CandlestickChart } from 'react-native-wagmi-charts';
 
 import { Text, View } from '@/components/Themed';
-import { CurrencyDetail, useChartHistory } from '@/hooks';
+import { CurrencyDetail } from '@/hooks';
 
 const Chart = () => {
-  const { history } = useChartHistory();
-  const { setShowChartText } = React.useContext(CurrencyDetail);
+  const { setShowChartText, historyChart, setDisableScroll } = React.useContext(CurrencyDetail);
+
+  const handleStartDrag = () => {
+    setShowChartText(true);
+    setDisableScroll(true);
+  };
+
+  const handleStopDrag = () => {
+    setShowChartText(false);
+    setDisableScroll(false);
+  };
 
   return (
     <GestureHandlerRootView>
       <View style={styles.containerChart} >
-        {history.length > 0 ? (
-          <CandlestickChart onTouchStart={() => setShowChartText(true)} height={230} width={Dimensions.get('window').width - 20}>
+        {historyChart.length > 0 ? (
+          <CandlestickChart onTouchStart={handleStartDrag} height={230} width={Dimensions.get('window').width - 20}>
             <CandlestickChart.Candles />
             <CandlestickChart.Crosshair
-              onEnded={() => setShowChartText(false)}
-              onCancelled={() => setShowChartText(false)}
-              onFailed={() => setShowChartText(false)}
+              onEnded={handleStopDrag}
+              onCancelled={handleStopDrag}
+              onFailed={handleStopDrag}
             />
           </CandlestickChart>
         ) : (

@@ -37,6 +37,7 @@ export type TickerType = {
   buy: string;
   sell: string;
   server_time: number;
+  median: number;
 };
 
 export type FetchSupportedCurrenciesResponse = CurrencyType[];

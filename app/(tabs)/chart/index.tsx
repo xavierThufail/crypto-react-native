@@ -3,23 +3,24 @@ import { StyleSheet, ScrollView } from 'react-native';
 import { CandlestickChart } from 'react-native-wagmi-charts';
 
 import { View } from '@/components/Themed';
-import { CurrencyDetail, useChartHistory } from '@/hooks';
+import { CurrencyDetail } from '@/hooks';
 import Header from './block/Header';
 import Chart from './block/Chart';
 import Content from './block/Content';
+import ButtonTransaction from './block/ButtonTransaction';
 
 const ChartSection = () => {
-  const { history } = useChartHistory();
-  const { disableScroll } = React.useContext(CurrencyDetail);
+  const { disableScroll, historyChart } = React.useContext(CurrencyDetail);
 
   return (
     <View style={styles.container}>
-      <CandlestickChart.Provider data={history}>
+      <CandlestickChart.Provider data={historyChart}>
         <ScrollView style={styles.containerScrollView} scrollEnabled={!disableScroll}>
           <Header />
           <Chart />
           <Content />
         </ScrollView>
+        <ButtonTransaction />
       </CandlestickChart.Provider>
     </View>
   );

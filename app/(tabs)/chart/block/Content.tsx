@@ -68,11 +68,23 @@ const Content = () => {
             <View style={[styles.flexRowSpaceBetweenAlignCenter]}>
               <Text style={[{ fontSize: 14 }]}>{`${hook.selectedCurrency?.name} Balance`}</Text>
               <View style={{ display: 'flex', alignItems: 'flex-end' }}>
-                <Text style={[styles.bold, { fontSize: 16 }]}>{hook.selectedCurrency?.name}</Text>
-                <Text style={[styles.fontStandard, styles.colorSecondary]}>{hook.selectedCurrency?.name}</Text>
+                <Text style={[styles.bold, { fontSize: 16 }]}>{hook.selectedCurrency?.name + ' 0'}</Text>
+                <Text style={[styles.fontStandard, styles.colorSecondary]}>{'Rp 0'}</Text>
               </View>
             </View>
           </Button>
+        </View>
+        <View style={{ padding: 20 }}>
+          <Text style={[{ fontSize: 18 }, styles.bold]} >Pintu Users Activity</Text>
+          <View style={[styles.flexRowSpaceBetweenAlignCenter, { paddingVertical: 20, gap: 5 }]}>
+            <View style={{ height: 7, width: '63%', backgroundColor: '#0a68f4', borderTopLeftRadius: 6, borderBottomLeftRadius: 6 }} />
+            <View style={{ height: 7, width: '37%', backgroundColor: '#e54040', borderTopRightRadius: 6, borderBottomRightRadius: 6 }} />
+          </View>
+          <View style={[styles.flexRowSpaceBetweenAlignCenter, { paddingBottom: 20, gap: 5 }]}>
+            <Text style={[styles.fontStandard, styles.bold]} >63% Bought</Text>
+            <Text style={[styles.fontStandard, styles.bold]} >37% Sell</Text>
+          </View>
+          <Text style={[styles.fontStandard, styles.colorSecondary]} >BTC trading activities among all Pintu users in the last 24 hours</Text>
         </View>
       </View>
       <ModalMinimunTransaction {...hook} {...modalHook} />
