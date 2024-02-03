@@ -5,7 +5,7 @@ import { Text, View } from '@/components/Themed';
 const OrderSection = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Order Section</Text>
+      <Text style={styles.title}>Under Maintenance</Text>
     </View>
   );
 }
