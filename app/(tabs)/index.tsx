@@ -16,12 +16,14 @@ export default function TabLayout() {
   return (
     <React.Fragment>
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-        <Link href={'/search'}>
-          <Text>{selectedCurrency?.name}</Text>
-        </Link>
+        {selectedCurrency && (
+          <Link href={'/search'}>
+            <Text>{selectedCurrency.name}</Text>
+          </Link>
+        )}
         <Entypo name="chevron-small-down" size={24} color="black" />
       </View>
-      <Tab.Navigator>
+      <Tab.Navigator screenOptions={{ swipeEnabled: false }}>
         <Tab.Screen name="Chart" component={ChartSection} />
         <Tab.Screen name="Order" component={OrderSection} />
       </Tab.Navigator>
