@@ -6,7 +6,7 @@ import { SvgUri } from 'react-native-svg';
 import { Text, View } from '@/components/Themed';
 import { CurrencyDetail } from '@/hooks';
 import { Link, router } from 'expo-router';
-import { CurrencyItem } from '@/constants/types';
+import { CurrencyType } from '@/constants/types';
 
 const useSearch = () => {
   const [value, setValue] = React.useState('');
@@ -16,11 +16,11 @@ const useSearch = () => {
   const filteredCurrencies = React.useMemo(() => {
     const valueLowerCase = value.toLowerCase();
     return currencies.filter((currency) =>
-      currency.name.toLowerCase().includes(valueLowerCase)
+      currency.name?.toLowerCase().includes(valueLowerCase)
       || currency.symbol.toLowerCase().includes(valueLowerCase));
   }, [value, currencies]);
 
-  const onCurrencySelect = (currency: CurrencyItem) => () => {
+  const onCurrencySelect = (currency: CurrencyType) => () => {
     setSelectedCurrency(currency);
     router.replace('/');
   };
@@ -46,13 +46,13 @@ const Header = ({ value, setValue }: HookResult) => (
   </View>
 );
 
-const CurrencyOption = ({ symbol, name, logo }: CurrencyItem) => (
-  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: '#f4f4f5', borderStyle: 'solid', paddingHorizontal: 15 }}>
+const CurrencyOption = ({ symbol, name, url_logo }: CurrencyType) => (
+  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: '#f4f4f5', borderStyle: 'solid', paddingHorizontal: 15, marginBottom: 10 }}>
     <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
       <SvgUri 
-        uri={logo}
-        width={28}
-        height={28}
+        uri={url_logo}
+        width={32}
+        height={32}
         color={'black'}
       />
       <Text style={{ fontSize: 16 }}>{name}</Text>
