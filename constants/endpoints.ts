@@ -1,4 +1,6 @@
-const binancenUrl = 'https://api.binance.com';
-const pintuUrl = 'https://api.pintu.co.id';
+const indodax = 'https://indodax.com'
 
-export const urlSupportedCurrencies = `${pintuUrl}/v2/wallet/supportedCurrencies`;
+export const streamIndodaxUrl = 'wss://ws3.indodax.com/ws';
+export const urlSupportedCurrencies = `${indodax}/api/pairs`;
+export const urlHistoryChart = `${indodax}/tradingview/history_v2`;
+export const urlTickerCurrency = `${indodax}/api/ticker`;
